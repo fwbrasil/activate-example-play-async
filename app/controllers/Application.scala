@@ -137,13 +137,11 @@ object Application extends Controller {
     def delete(id: String) = Action {
         Async {
             asyncTransactionalChain { implicit ctx =>
-                asyncById[Computer](id).flatMap { computerOption =>
-                    asyncTransactional {
-                        computerOption.map { computer =>
-                            computer.delete
-                        }.getOrElse(NotFound)
-                        Home.flashing("success" -> "Computer has been deleted")
-                    }
+                asyncById[Computer](id).map { computerOption =>
+                    computerOption.map { computer =>
+                        computer.delete
+                    }.getOrElse(NotFound)
+                    Home.flashing("success" -> "Computer has been deleted")
                 }
             }
         }

@@ -12,7 +12,7 @@ object ApplicationBuild extends Build {
   	    "fwbrasil.net" at "http://fwbrasil.net/maven/"
   	)
   	
-    val activateVersion = "1.3-SNAPSHOT"
+    val activateVersion = "1.3"
   	val activateCore = "net.fwbrasil" %% "activate-core" % activateVersion
   	val activatePlay = "net.fwbrasil" %% "activate-play" % activateVersion
   	val activateJdbc = "net.fwbrasil" %% "activate-jdbc" % activateVersion

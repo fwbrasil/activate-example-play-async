@@ -8,8 +8,8 @@ import com.github.mauricio.async.db.postgresql.pool.PostgreSQLConnectionFactory
 import com.github.mauricio.async.db.Configuration
 
 object computerPersistenceContext extends ActivateContext {
-    
-    val storage = new AsyncPostgreSQLStorage{
+
+    val storage = new AsyncPostgreSQLStorage {
         def configuration =
             new Configuration(
                 username = "postgres",
@@ -18,5 +18,6 @@ object computerPersistenceContext extends ActivateContext {
                 database = Some("computer"))
         lazy val objectFactory = new PostgreSQLConnectionFactory(configuration)
     }
+
 }
 

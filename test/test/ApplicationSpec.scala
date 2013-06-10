@@ -30,29 +30,29 @@ class ApplicationSpec extends SpecificationWithJUnit {
         }
 
         "list computers on the the first page" in {
-            running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
+            running(FakeApplication()) {
 
                 val result = controllers.Application.list(0, 2, "")(FakeRequest())
 
                 status(result) must equalTo(OK)
-                contentAsString(result) must contain("565 computers found")
+                contentAsString(result) must contain("564 computers found")
 
             }
         }
 
         "filter computer by name" in {
-            running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
+            running(FakeApplication()) {
 
                 val result = controllers.Application.list(0, 2, "Apple")(FakeRequest())
 
                 status(result) must equalTo(OK)
-                contentAsString(result) must contain("13 computers found")
+                contentAsString(result) must contain("12 computers found")
 
             }
         }
 
         "create new computer" in {
-            running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
+            running(FakeApplication()) {
 
                 val badResult = controllers.Application.save(FakeRequest())
 

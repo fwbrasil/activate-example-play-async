@@ -1,6 +1,6 @@
 import play.Project._
 
-name := "activate-example-play"
+name := "activate-example-play-async"
 
 version := "1.0"
 
@@ -14,7 +14,8 @@ libraryDependencies ++= Seq(
   jdbc,
   anorm,
   "net.fwbrasil" %% "activate-play" % "1.4-SNAPSHOT" exclude("org.scala-stm", "scala-stm_2.10.0"),
-  "net.fwbrasil" %% "activate-jdbc" % "1.4-SNAPSHOT",
+  "net.fwbrasil" %% "activate-jdbc-async" % "1.4-SNAPSHOT" exclude("org.scala-stm", "scala-stm_2.10.0"),
+  "net.fwbrasil" %% "activate-mongo-async" % "1.4-SNAPSHOT" exclude("org.scala-stm", "scala-stm_2.10.0"),
   "mysql" % "mysql-connector-java" % "5.1.16"
 )
 

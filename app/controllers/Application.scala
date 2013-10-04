@@ -47,12 +47,10 @@ object Application extends Controller {
      * @param orderBy Column to be sorted
      * @param filter Filter applied on computer names
      */
-    def list(page: Int, orderBy: Int, filter: String) = Action { implicit request =>
-        Async {
-            asyncTransactionalChain { implicit ctx =>
-                Computer.list(page = page, orderBy = orderBy, filter = ("*" + filter + "*")).map {
-                    page => Ok(html.list(page, orderBy, filter))
-                }
+    def list(page: Int, orderBy: Int, filter: String) = Action.async { implicit request =>
+        asyncTransactionalChain { implicit ctx =>
+            Computer.list(page = page, orderBy = orderBy, filter = ("*" + filter + "*")).map {
+                page => Ok(html.list(page, orderBy, filter))
             }
         }
     }
@@ -62,15 +60,13 @@ object Application extends Controller {
      *
      * @param id Id of the computer to edit
      */
-    def edit(id: String) = Action {
-        Async {
-            asyncTransactionalChain { implicit ctx =>
-                Company.options.flatMap { companyOptions =>
-                    asyncById[Computer](id).map { computerOption =>
-                        computerOption.map { computer =>
-                            Ok(html.editForm(id, computerForm.fillWith(computer), companyOptions))
-                        }.getOrElse(NotFound)
-                    }
+    def edit(id: String) = Action.async {
+        asyncTransactionalChain { implicit ctx =>
+            Company.options.flatMap { companyOptions =>
+                asyncById[Computer](id).map { computerOption =>
+                    computerOption.map { computer =>
+                        Ok(html.editForm(id, computerForm.fillWith(computer), companyOptions))
+                    }.getOrElse(NotFound)
                 }
             }
         }
@@ -81,19 +77,17 @@ object Application extends Controller {
      *
      * @param id Id of the computer to edit
      */
-    def update(id: String) = Action { implicit request =>
-        Async {
-            asyncTransactionalChain { implicit ctx =>
-                Company.options.flatMap { companyOptions =>
-                    computerForm.bindFromRequest.fold(
-                        formWithErrors =>
-                            Future.successful(BadRequest(html.editForm(id, formWithErrors, companyOptions))),
-                        computerData => {
-                            computerData.asyncUpdateEntity(id).map { computer =>
-                                Home.flashing("success" -> "Computer %s has been updated".format(computer.name))
-                            }
-                        })
-                }
+    def update(id: String) = Action.async { implicit request =>
+        asyncTransactionalChain { implicit ctx =>
+            Company.options.flatMap { companyOptions =>
+                computerForm.bindFromRequest.fold(
+                    formWithErrors =>
+                        Future.successful(BadRequest(html.editForm(id, formWithErrors, companyOptions))),
+                    computerData => {
+                        computerData.asyncUpdateEntity(id).map { computer =>
+                            Home.flashing("success" -> "Computer %s has been updated".format(computer.name))
+                        }
+                    })
             }
         }
     }
@@ -101,12 +95,10 @@ object Application extends Controller {
     /**
      * Display the 'new computer form'.
      */
-    def create = Action {
-        Async {
-            asyncTransactionalChain { implicit ctx =>
-                Company.options.map { companyOptions =>
-                    Ok(html.createForm(computerForm, companyOptions))
-                }
+    def create = Action.async {
+        asyncTransactionalChain { implicit ctx =>
+            Company.options.map { companyOptions =>
+                Ok(html.createForm(computerForm, companyOptions))
             }
         }
     }
@@ -114,19 +106,17 @@ object Application extends Controller {
     /**
      * Handle the 'new computer form' submission.
      */
-    def save = Action { implicit request =>
-        Async {
-            asyncTransactionalChain { implicit ctx =>
-                Company.options.flatMap { companyOptions =>
-                    computerForm.bindFromRequest.fold(
-                        formWithErrors =>
-                            Future.successful(BadRequest(html.createForm(formWithErrors, companyOptions))),
-                        computerData => {
-                            computerData.asyncCreateEntity.map { computer =>
-                                Home.flashing("success" -> "Computer %s has been created".format(computer.name))
-                            }
-                        })
-                }
+    def save = Action.async { implicit request =>
+        asyncTransactionalChain { implicit ctx =>
+            Company.options.flatMap { companyOptions =>
+                computerForm.bindFromRequest.fold(
+                    formWithErrors =>
+                        Future.successful(BadRequest(html.createForm(formWithErrors, companyOptions))),
+                    computerData => {
+                        computerData.asyncCreateEntity.map { computer =>
+                            Home.flashing("success" -> "Computer %s has been created".format(computer.name))
+                        }
+                    })
             }
         }
     }
@@ -134,15 +124,13 @@ object Application extends Controller {
     /**
      * Handle computer deletion.
      */
-    def delete(id: String) = Action {
-        Async {
-            asyncTransactionalChain { implicit ctx =>
-                asyncById[Computer](id).map { computerOption =>
-                    computerOption.map { computer =>
-                        computer.delete
-                    }.getOrElse(NotFound)
-                    Home.flashing("success" -> "Computer has been deleted")
-                }
+    def delete(id: String) = Action.async {
+        asyncTransactionalChain { implicit ctx =>
+            asyncById[Computer](id).map { computerOption =>
+                computerOption.map { computer =>
+                    computer.delete
+                }.getOrElse(NotFound)
+                Home.flashing("success" -> "Computer has been deleted")
             }
         }
     }

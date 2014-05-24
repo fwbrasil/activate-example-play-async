@@ -13,9 +13,9 @@ resolvers ++= Seq(
 libraryDependencies ++= Seq(
   jdbc,
   anorm,
-  "net.fwbrasil" %% "activate-play" % "1.5-SNAPSHOT" exclude("org.scala-stm", "scala-stm_2.10.0"),
-  "net.fwbrasil" %% "activate-jdbc-async" % "1.5-SNAPSHOT" exclude("org.scala-stm", "scala-stm_2.10.0"),
-  "net.fwbrasil" %% "activate-mongo-async" % "1.5-SNAPSHOT" exclude("org.scala-stm", "scala-stm_2.10.0"),
+  "net.fwbrasil" %% "activate-play" % "1.5" exclude("org.scala-stm", "scala-stm_2.10.0"),
+  "net.fwbrasil" %% "activate-jdbc-async" % "1.5" exclude("org.scala-stm", "scala-stm_2.10.0"),
+  "net.fwbrasil" %% "activate-mongo-async" % "1.5" exclude("org.scala-stm", "scala-stm_2.10.0"),
   "mysql" % "mysql-connector-java" % "5.1.16"
 )
 
